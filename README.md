@@ -29,8 +29,8 @@
 ## Быстрый старт
 ```bash
 # 1. Клонирование репозитория
-git clone https://github.com/Mataev25/BankApp.git
-cd BankApp
+git clone https://github.com/Mataev25/Project_Bank.git
+cd Project_Bank
 
 # 2. Установка зависимостей
 dotnet restore
