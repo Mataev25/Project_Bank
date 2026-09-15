@@ -191,11 +191,7 @@ namespace BankApp.UI {
             }
             Console.WriteLine("\n***** История операций *****");
 
-            List<Transaction> userTransactions = new List<Transaction>();
-            foreach (Transaction trans in context.Transactions) {
-                if (trans.UserId == currentUser.Id)
-                    userTransactions.Add(trans);
-            }
+            List<Transaction> userTransactions = accountService.GetTransactionsByUserId(currentUser.Id, 10);
 
             if (userTransactions.Count == 0)
                 Console.WriteLine("Операций пока нет");

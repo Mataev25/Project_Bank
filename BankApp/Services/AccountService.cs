@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BankApp.Models;
 using BankApp.Data;
 
@@ -92,6 +93,21 @@ namespace BankApp.Services {
                 $"Текущий баланс: {account.Balance} р.");
             return true;
         }
+
+        public List<Transaction> GetTransactionsByUserId(int userId, int limit = 10) {
+            List<Transaction> result = new List<Transaction>();
+            foreach (Transaction trans in context.Transactions) {
+                if (trans.UserId == userId)
+                    result.Add(trans);
+            }
+
+            result.Sort((a,b) => b.Date.CompareTo(a.Date));
+
+            if (result.Count > limit)
+                result = result.GetRange(0,limit);
+            return result;
+        }
+        
     }
 
 
