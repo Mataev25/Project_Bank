@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using BankApp.Services;
 using BankApp.Models;
 using BankApp.Data;
-
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 namespace BankApp.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : ControllerBase {
@@ -15,30 +17,41 @@ public class AccountController : ControllerBase {
         accService = new AccountService(context);
     }
 
-    [HttpGet("{userId}/balance")]
-    public IActionResult GetBalance (int userId) {
-        var balance = accService.GetBalance(userId);
-        return Ok(new {UserId = userId, Balance = balance});
+    private int GetCurrentUserId() {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+            throw new UnauthorizedAccessException("Пользователь не авторизован");
+        return int.Parse(userIdClaim.Value);
     }
 
-    [HttpPost("{userId}/deposit")]
-    public IActionResult Deposit(int userId, [FromBody] TransactionRequest request) {
+    [HttpGet("balance")]
+    public IActionResult GetBalance () {
+        int userId = GetCurrentUserId();
+        var balance = accService.GetBalance(userId);
+        return Ok(new {Balance = balance});
+    }
+
+    [HttpPost("deposit")]
+    public IActionResult Deposit([FromBody] TransactionRequest request) {
+        int userId = GetCurrentUserId();
         var result = accService.Deposit(userId, request.Amount);
         if (!result) 
             return BadRequest("Не удалось пополнить счет. Проверьте сумму.");
         return Ok(new {Message = "Счет пополнен", NewBalance = accService.GetBalance(userId)});
     }
 
-    [HttpPost("{userId}/withdraw")]
-    public IActionResult Withdraw(int userId, [FromBody] TransactionRequest request) {
+    [HttpPost("withdraw")]
+    public IActionResult Withdraw([FromBody] TransactionRequest request) {
+        int userId = GetCurrentUserId();
         var result = accService.Withdraw(userId, request.Amount);
         if (!result)
             return BadRequest("Не удалось снять средства. Проверьте сумму или баланс.");
         return Ok(new {Message = "Средства сняты", NewBalance = accService.GetBalance(userId)});
     }
 
-    [HttpGet("{userId}/transactions")]
-    public IActionResult GetTransactions(int userId) {
+    [HttpGet("transactions")]
+    public IActionResult GetTransactions() {
+        int userId = GetCurrentUserId();
         var transactions = accService.GetTransactionsByUserId(userId);
         return Ok(transactions);
     }
