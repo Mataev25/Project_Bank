@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using BankApp.Services;
 using BankApp.Models;
 using BankApp.Data;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
 
 namespace BankApp.API.Controllers;
 
@@ -9,10 +14,12 @@ namespace BankApp.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase {
     private readonly AuthService authService;
+    private readonly IConfiguration configuration;
 
-    public AuthController() {
+    public AuthController(IConfiguration configuration) {
         var context = new AppDbContext();
         authService = new AuthService(context);
+        this.configuration = configuration;
     }
 
     [HttpPost("login")]
@@ -37,11 +44,40 @@ public class AuthController : ControllerBase {
 
         authService.ResetFailedAttempts(request.CardNumber);
 
+        var token = GenerateJwtToken(user);
+
         return Ok(new {
             Message = "Успешный вход",
             UserName = user.FullName,
-            UserId = user.Id
+            UserId = user.Id,
+            Token = token
         });
+    }
+
+    private string GenerateJwtToken(User user) {
+        var jwtSettings = configuration.GetSection("Jwt");
+        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+
+        var claims = new[] {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.FullName)
+        };
+
+        var tokenDescriptor = new SecurityTokenDescriptor {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddHours(1),
+            Issuer = jwtSettings["Issuer"],
+            Audience = jwtSettings["Audience"],
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature
+            )
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+
     }
 
     [HttpPost("activate")]
