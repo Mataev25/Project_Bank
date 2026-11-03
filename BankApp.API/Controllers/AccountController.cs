@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using BankApp.Services;
 using BankApp.Models;
-using BankApp.Data;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 namespace BankApp.API.Controllers;
@@ -12,9 +11,8 @@ namespace BankApp.API.Controllers;
 public class AccountController : ControllerBase {
     private readonly AccountService accService;
 
-    public AccountController() {
-        var context = new AppDbContext();
-        accService = new AccountService(context);
+    public AccountController(AccountService accService) {
+        this.accService = accService;
     }
 
     private int GetCurrentUserId() {

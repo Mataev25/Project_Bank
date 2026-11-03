@@ -1,5 +1,6 @@
 # BankApp
 
+
 ## Требования к приложению:
 
 ### 1. Аутентификация и идентификация
@@ -43,6 +44,9 @@ dotnet run --project BankApp/BankApp.csproj
 
 # 5. Запуск графической версии (WinForms)
 dotnet run --project BankApp.WinForms/BankApp.WinForms.csproj
+
+# 6. Запуск swagger
+dotnet run --project BankApp.API/BankApp.API.csproj
 
 # 6. Тестовые данные для входа
 Номера карт действующих клиентов:

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using BankApp.Services;
 using BankApp.Models;
-using BankApp.Data;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,9 +15,9 @@ public class AuthController : ControllerBase {
     private readonly AuthService authService;
     private readonly IConfiguration configuration;
 
-    public AuthController(IConfiguration configuration) {
-        var context = new AppDbContext();
-        authService = new AuthService(context);
+    public AuthController(AuthService authService, IConfiguration configuration) {
+        
+        this.authService = authService;
         this.configuration = configuration;
     }
 
