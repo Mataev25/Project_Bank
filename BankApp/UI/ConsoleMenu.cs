@@ -11,8 +11,8 @@ namespace BankApp.UI {
         private AccountService accountService;
         private AppDbContext context;
 
-        public ConsoleMenu() {
-            context = new AppDbContext();
+        public ConsoleMenu(AppDbContext context) {
+            this.context = context;
             authService = new AuthService(context);
             currentUser = null;
             accountService = new AccountService(context);

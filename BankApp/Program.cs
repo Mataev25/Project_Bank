@@ -7,7 +7,9 @@ using BankApp;
 using System.IO;
 using BankApp.Services;
 using System.Collections.Generic;
-
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 
 class Program {
@@ -17,17 +19,28 @@ class Program {
             return;
         }
 
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+        
+        string connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseSqlServer(connectionString);
+
         AppDbContext context = null;
         try {
-            context = new AppDbContext();
+            context = new AppDbContext(optionsBuilder.Options);
             DbInitializer.Seed(context);
+
+            IMenu menu = new ConsoleMenu(context);
+            menu.Run();
         } finally {
             if (context != null)
                 context.Dispose();
         }
 
-        IMenu menu = new ConsoleMenu();
-        menu.Run();
 
         //UserTests.Run();
         //AccountTests.Run();
@@ -35,9 +48,12 @@ class Program {
     }
 
     static void GenerateReports() {
-        string connectString = "Server=localhost;DataBase=BankApp;" + 
-                                "User Id = sa;Password=SkiWaxFlah835;" + 
-                                "TrustServerCertificate=True;";
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        string connectString = configuration.GetConnectionString("DefaultConnection");
 
         var reportService = new ReportService(connectString);
         Console.WriteLine("Генерация отчетов...");

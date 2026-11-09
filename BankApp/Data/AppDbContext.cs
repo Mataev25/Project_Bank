@@ -13,13 +13,5 @@ namespace BankApp.Data {
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            if (!optionsBuilder.IsConfigured) {
-                optionsBuilder.UseSqlServer("Server=localhost;Database=BankApp;" + 
-                                            "User Id = sa;Password=SkiWaxFlah835;" + 
-                                            "TrustServerCertificate=True");
-            }
-
-        }
     }
 }

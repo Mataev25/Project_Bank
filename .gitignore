@@ -56,3 +56,8 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 .csproj.user
+
+# Local configuration with secrets (passwords, connection strings)
+appsettings.json
+appsettings.*.json
+!appsettings.Example.json
