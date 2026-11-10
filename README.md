@@ -39,16 +39,25 @@ dotnet restore
 # 3. Сборка проекта
 dotnet build
 
-# 4. Запуск консольной версии
-dotnet run --project BankApp/BankApp.csproj
+# 4. Запуск swagger
+# Если у вас установлен docker, используйте команду:
+docker compose up --build 
 
-# 5. Запуск графической версии (WinForms)
-dotnet run --project BankApp.WinForms/BankApp.WinForms.csproj
-
-# 6. Запуск swagger
+# Если docker не установлен, используйте команду:
 dotnet run --project BankApp.API/BankApp.API.csproj
 
-# 6. Тестовые данные для входа
+# После запуска API будет доступно по адресу http://localhost:8080/swagger
+
+# 5. Запуск консольной версии
+dotnet run --project BankApp/BankApp.csproj 
+
+# 6. Запуск графической версии (WinForms)
+dotnet run --project BankApp.WinForms/BankApp.WinForms.csproj
+
+# 7. Чтобы создать отчет в .TXT, CSV, JSON используйте команду:
+dotnet run --project BankApp/BankApp.csproj -- --report
+
+# 8. Тестовые данные для входа
 Номера карт действующих клиентов:
 1234-5678-9010-1112, PIN-код 3434;
 2345-6789-1011-1213, PIN-код 4343;

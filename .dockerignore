@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.git/
+**/.gitignore
+**/README.md
+**/Reports/
+Data_Old/
+.env
+appsettings.json
+appsettings.*.json
+!appsettings.Example.json
