@@ -14,7 +14,7 @@ namespace BankApp.Models {
             pinHash = string.Empty;
             id = 0;
             firstLogin = true;
-            createAt = DateTime.Now;
+            createAt = DateTime.UtcNow;
         }
 
         public int Id {

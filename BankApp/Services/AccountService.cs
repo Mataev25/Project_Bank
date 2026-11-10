@@ -45,7 +45,7 @@ namespace BankApp.Services {
                                 amount,
                                 $"Пополнение счета {account.AccountNumber}");
 
-            trans.Date = DateTime.Now;
+            trans.Date = DateTime.UtcNow;
             context.Transactions.Add(trans);
 
             context.SaveChanges();
@@ -83,7 +83,7 @@ namespace BankApp.Services {
                                 amount,
                                 $"Снятие со счета {account.AccountNumber}");
                                 
-            trans.Date = DateTime.Now;
+            trans.Date = DateTime.UtcNow;
             context.Transactions.Add(trans);
 
             context.SaveChanges();

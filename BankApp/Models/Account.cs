@@ -13,7 +13,7 @@ namespace BankApp.Models {
             this.userId = userId;
             this.accountNumber = accountNumber;
             this.balance = 0;
-            this.createdAt = DateTime.Now;
+            this.createdAt = DateTime.UtcNow;
         }
 
         public int Id {

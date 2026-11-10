@@ -199,7 +199,7 @@ namespace BankApp.UI {
                 int count = userTransactions.Count > 10 ? 10 : userTransactions.Count;
                 for (int i = userTransactions.Count-1; i >= userTransactions.Count-count; i--) {
                     Transaction t = userTransactions[i];
-                    Console.WriteLine($"{t.Date:dd.MM.yyyy HH:mm} | {t.Type} | {t.Amount} р. {t.Description}"); 
+                    Console.WriteLine($"{t.Date.ToLocalTime():dd.MM.yyyy HH:mm} | {t.Type} | {t.Amount} р. {t.Description}"); 
                 }
             }
             Console.WriteLine("Нажминте Enter для продолжения...");

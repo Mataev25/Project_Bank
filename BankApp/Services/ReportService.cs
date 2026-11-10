@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Data.SqlClient;
+using Npgsql;
+
 
 namespace BankApp.Services {
     public class ReportService {
@@ -15,22 +16,22 @@ namespace BankApp.Services {
 
         public List<UserCardBalance> GetUserCardBalanceReport() {
             var result = new List<UserCardBalance>();
-            SqlConnection connect = null;
-            SqlCommand command = null;
-            SqlDataReader reader = null;
+            NpgsqlConnection connect = null;
+            NpgsqlCommand command = null;
+            NpgsqlDataReader reader = null;
 
             try {
-                connect = new SqlConnection(conctString);
+                connect = new NpgsqlConnection(conctString);
                 connect.Open();
 
                 string query = @"
-                    SELECT u.FullName, c.Number, a.Balance
-                    FROM Users u
-                    JOIN Cards c ON u.Id = c.UserId
-                    JOIN Accounts a ON u.Id = a.UserId
+                    SELECT u.""FullName"", c.""Number"", a.""Balance""
+                    FROM ""Users"" u
+                    JOIN ""Cards"" c ON u.""Id"" = c.""UserId""
+                    JOIN ""Accounts"" a ON u.""Id"" = a.""UserId""
                 ";
 
-                command = new SqlCommand(query, connect);
+                command = new NpgsqlCommand(query, connect);
                 reader = command.ExecuteReader();
 
                 while(reader.Read()) {

@@ -16,21 +16,21 @@ namespace BankApp.Data {
             user1.Phone = "+79991112233";
             user1.IsFirstLogin = false;
             user1.PinHash = "5f395d07369071a505ef926527de2ac53e8c29e103dc63398315bc276224b81a";
-            user1.CreatedAt = DateTime.Now;
+            user1.CreatedAt = DateTime.UtcNow;
 
             User user2 = new User();
             user2.FullName = "Петухов Алексей";
             user2.Phone = "+79991122233";
             user2.IsFirstLogin = false;
             user2.PinHash = "3f95b1b8a32c2c0251dfdbc3c8a30aab6d6e680cf0ef03e8af84a65dff0c4a85";
-            user2.CreatedAt = DateTime.Now;
+            user2.CreatedAt = DateTime.UtcNow;
 
             User user3 = new User();
             user3.FullName = "Слинкина Юля";
             user3.Phone = "+79981112233";
             user3.IsFirstLogin = false;
             user3.PinHash = "3e7c3d4cf5be91eca62500b41e292c3474ecc0329156d11f682b609c42828df7";
-            user3.CreatedAt = DateTime.Now;
+            user3.CreatedAt = DateTime.UtcNow;
 
             context.Users.Add(user1);
             context.Users.Add(user2);

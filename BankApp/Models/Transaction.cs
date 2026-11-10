@@ -14,7 +14,7 @@ namespace BankApp.Models {
             this.userId = userId;
             this.type = type;
             this.amount = amount;
-            this.date = DateTime.Now;
+            this.date = DateTime.UtcNow;
             this.description = description;
         }
 
